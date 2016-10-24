@@ -104,7 +104,7 @@ class Client(object):
         return self._request("GET", "/v1/me")
 
     def create_post(self, user_id, title, content, content_format, tags=None,
-                    canonical_url=None, publish_status=None, published_at=None, license=None):
+                    canonical_url=None, publish_status=None, published_at=None, license=None, publication_id=None):
         """Create a post for the current user.
 
         Requires the ``publishPost`` scope.
@@ -160,7 +160,10 @@ class Client(object):
         if published_at is not None:
             data['publishedAt'] = published_at
 
-        path = "/v1/users/%s/posts" % user_id
+        if publication_id is not None:
+            path = "/v1/publications/%s/posts" % publication_id
+        else:
+            path = "/v1/users/%s/posts" % user_id
         return self._request("POST", path, json=data)
 
     def upload_image(self, file_path, content_type):
